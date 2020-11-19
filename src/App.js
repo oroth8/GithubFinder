@@ -11,32 +11,15 @@ import GithubState from './context/github/GithubState';
 import './App.css';
 
 const App = () => {
-  const [users, setUsers] = useState([]);
-  const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false);
   const [repos, setRepos] = useState([]);
   const [alert, setAlert] = useState(null);
 
-  const searchUsers = async (text) => {
-   setLoading(true)
-    const res = await axios.get(`https://api.github.com/search/users?q=${text}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
-    setUsers(res.data.items);
-    setLoading(false);
-  }
+  
   // Get a signle github user
-  const getUser = async (username) => {
-    setLoading(true)
-
-    const res = await axios.get(`https://api.github.com/users/${username}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
-
-    setUser(res.data);
-    setLoading(false);
-  }
+  
   // clear users
-  const clearUsers = () => {
-    setUsers([]);
-    setLoading(false);
-  }
+ 
   // get user repo
   const getUserRepo = async (username) => {
     setLoading(true)
@@ -63,18 +46,15 @@ const App = () => {
             <Route exact path='/' render={props => (
               <Fragment>
                 <Search 
-                searchUsers={searchUsers} 
-                clearUsers={clearUsers} 
-                showClear={users.length > 0 ? true:false} 
                 showAlert={showAlert}
                 />
-                <Users loading={loading} users={users}/>
+                <Users/>
               </Fragment>
             )}
             />
             <Route exact path='/about' component={About}/>
             <Route exact path="/user/:login" render={props=> (
-              <User {...props} getUser={getUser} getUserRepo={getUserRepo} user={user} loading={loading} repos={repos}/>
+              <User {...props} getUserRepo={getUserRepo}  repos={repos}/>
               )} />
         </Switch>
       </div>
