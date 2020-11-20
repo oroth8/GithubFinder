@@ -7,7 +7,9 @@ import {
     SET_LOADING,
     CLEAR_USERS,
     GET_USER,
-    GET_REPOS
+    GET_REPOS,
+    DISPLAY_USERS
+    
 } from '../types';
 
 let githubClientId;
@@ -29,6 +31,17 @@ const GithubState = props => {
         loading: false
     }
     const [state, dispatch] = useReducer(GithubReducer, initialState);
+
+    // Display sample users
+    const displayUsers = async () => {
+        setLoading();
+        const res = await axios.get(`https://api.github.com/users?client_id=${githubClientId}&client_secret=${githubClientSecret}`);
+
+        dispatch({
+            type: DISPLAY_USERS,
+            payload: res.data
+        })
+    }
 
     // Search User
     const searchUsers = async (text) => {
@@ -80,7 +93,8 @@ const GithubState = props => {
         searchUsers,
         clearUsers,
         getUser,
-        getUserRepo
+        getUserRepo,
+        displayUsers,
     }}>
     {props.children}
     </GithubContext.Provider>

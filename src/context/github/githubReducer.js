@@ -3,7 +3,9 @@ import {
     SET_LOADING,
     CLEAR_USERS,
     GET_USER,
-    GET_REPOS
+    GET_REPOS,
+    DISPLAY_USERS,
+    FILTER_HIRE
 } from '../types';
 
 
@@ -37,6 +39,12 @@ export default (state, action) => {
             return {
                 ...state,
                 loading: true
+            }
+        case DISPLAY_USERS:
+            return{
+                ...state,
+                users: action.payload,
+                loading: false
             }
         default: 
         return state;
